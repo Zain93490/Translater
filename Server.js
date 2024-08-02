@@ -58,7 +58,14 @@ const packageJson = {
     react: "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3"
-  }
+  },
+  scripts: {
+    start: "react-scripts start",
+    build: "react-scripts build",
+    predeploy: "npm run build",
+    deploy: "gh-pages -d build"
+  },
+  homepage: "http://YOUR_GITHUB_USERNAME.github.io/Translater"
 };
 
 fs.writeFileSync(path.join(clientDir, 'package.json'), JSON.stringify(packageJson, null, 2));
@@ -126,9 +133,13 @@ if (!fs.existsSync(srcDir)) {
 }
 
 fs.writeFileSync(path.join(srcDir, 'App.js'), appJs);
+if (!fs.existsSync(path.join(clientDir, 'public'))) {
+  fs.mkdirSync(path.join(clientDir, 'public'));
+}
 fs.writeFileSync(path.join(clientDir, 'public', 'index.html'), indexHtml);
 
 execSync('cd client && npm install');
 execSync('cd client && npm run build');
 
 console.log('Client build complete.');
+process.env.PORT
